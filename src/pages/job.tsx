@@ -2,8 +2,6 @@ import Filter from "../components/jobs/Filter";
 import Job from "../components/jobs/Job";
 import Searchbar from "../../src/components/layout/Searchbar";
 import Sidebar from "../../src/components/layout/Sidebar";
-import { useSidebar } from "../context/SidebarContext";
-import { useState } from "react";
 
 const jobs = [
   {
@@ -82,45 +80,23 @@ const jobs = [
     client_spent: "$+2k",
   },
 ];
-export function HomePage() {
-  const [selectedFilters, setSelectedFilters] = useState({
-    query: "",
-    priceRanges: [] as string[],
-    proposalsRanges: [] as string[],
-    isHourly: false,
-    isFixedPrice: false,
-    clientRating: 0,
-  });
-  const { isCollapsed } = useSidebar();
-
+export function jobPage() {
   const handleSearch = (query: string) => {
-    // console.log("Searching for:", query);
-    setSelectedFilters((prev) => ({ ...prev, query }));
+    console.log("Searching ", query);
   };
 
   return (
     <div className="w-screen h-screen flex justify-start ">
-      <div
-        className={`h-full ${isCollapsed ? "w-fit" : "w-[17%]"}  
-       `}
-      >
+      <div className="w-[17%] h-full">
         <Sidebar></Sidebar>
       </div>
 
-      <div
-        className={`flex w-[83%] h-full p-5 flex-col overflow-y-scroll          ${
-          isCollapsed ? "w-full" : "w-[83%]"
-        }  
-       `}
-      >
+      <div className="flex w-[83%] h-full p-5 flex-col overflow-y-scroll">
         <div className=" w-full  flex flex-col  ">
           <div className="w-full  flex">
             {" "}
             <Searchbar onSearch={handleSearch}></Searchbar>
-            <Filter
-              selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
-            />
+            <Filter />
           </div>
           <span className="h-[2px] w-full mb-4 bg-[#F3F4F6]"></span>
           {/* <div>filter</div> */}
