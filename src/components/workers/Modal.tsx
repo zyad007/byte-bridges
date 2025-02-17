@@ -15,7 +15,7 @@ interface WorkerModalProps {
   isOpen: boolean;
   name: string;
   ip: string;
-  status: "running" | "paused" | "inactive";
+  status: string;
   payement: "hourly" | "fixed";
   payment_verfied: boolean;
   propsal_count: string;
@@ -95,7 +95,7 @@ const WorkerModal: React.FC<WorkerModalProps> = ({
                 <RadioGroup
                   className="text-black font-semibold flex gap-2 mt-2"
                   value={selectedStatus}
-                  onValueChange={setSelectedStatus}
+                  onValueChange={setSelectedStatus as () => void}
                 >
                   <div className="flex gap-2">
                     <Radio value="running">Running</Radio>

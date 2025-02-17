@@ -3,7 +3,6 @@ import Job from "../components/jobs/Job";
 import Searchbar from "../../src/components/layout/Searchbar";
 import Sidebar from "../../src/components/layout/Sidebar";
 import { useSidebar } from "../context/SidebarContext";
-import { useState } from "react";
 
 const jobs = [
   {
@@ -83,19 +82,19 @@ const jobs = [
   },
 ];
 export function HomePage() {
-  const [selectedFilters, setSelectedFilters] = useState({
-    query: "",
-    priceRanges: [] as string[],
-    proposalsRanges: [] as string[],
-    isHourly: false,
-    isFixedPrice: false,
-    clientRating: 0,
-  });
+  // const [selectedFilters, setSelectedFilters] = useState({
+  //   query: "",
+  //   priceRanges: [] as string[],
+  //   proposalsRanges: [] as string[],
+  //   isHourly: false,
+  //   isFixedPrice: false,
+  //   clientRating: 0,
+  // });
   const { isCollapsed } = useSidebar();
 
   const handleSearch = (query: string) => {
-    // console.log("Searching for:", query);
-    setSelectedFilters((prev) => ({ ...prev, query }));
+    console.log("Searching for:", query);
+    // setSelectedFilters((prev) => ({ ...prev, query }));
   };
 
   return (
@@ -117,10 +116,7 @@ export function HomePage() {
           <div className="w-full  flex">
             {" "}
             <Searchbar onSearch={handleSearch}></Searchbar>
-            <Filter
-              selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
-            />
+            <Filter />
           </div>
           <span className="h-[2px] w-full mb-4 bg-[#F3F4F6]"></span>
           {/* <div>filter</div> */}

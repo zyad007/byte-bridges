@@ -7,10 +7,10 @@ interface workerProps {
   ip: string;
   name: string;
   jobs_completed: number;
-  status: "running" | "paused" | "inactive";
+  status: string;
   payement: string;
   toggle: boolean;
-  alert: boolean;
+  // alert: boolean;
   payment_verfied: boolean;
   propsal_count: string;
 }
@@ -21,7 +21,7 @@ const Worker: React.FC<workerProps> = ({
   status,
   payement,
   toggle,
-  alert,
+  // alert,
   payment_verfied,
   propsal_count,
 }) => {
@@ -44,7 +44,7 @@ const Worker: React.FC<workerProps> = ({
         name={name}
         ip={ip}
         status={status}
-        payement={payement}
+        payement={payement as "fixed" | "hourly"}
         payment_verfied={payment_verfied}
         propsal_count={propsal_count}
       />

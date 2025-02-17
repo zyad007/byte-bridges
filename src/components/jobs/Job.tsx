@@ -4,7 +4,7 @@ import clock from "../../../public/clock.svg";
 import paper from "../../../public/paper.svg";
 import ExpandableText from "./ExpandableText";
 import verified from "../../../public/verified.svg";
-import notVerified from "../../../public/notVerified.svg";
+import notVerified from "../../../public/notverified.svg";
 import Rate from "./Rate";
 import ContextMenu from "./ContextMenu";
 
@@ -14,7 +14,7 @@ interface jobProps {
   description: string;
   posted_at: string;
   type: string;
-  scrapped_at: string[];
+  scrapped_at: string;
   tags: string;
   client_rate: number;
   client_location: string;
@@ -28,7 +28,7 @@ const Job: React.FC<jobProps> = ({
   description,
   posted_at,
   type,
-  scrapped_at,
+  // scrapped_at,
   tags,
   client_rate,
   client_location,
