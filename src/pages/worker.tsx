@@ -96,7 +96,6 @@ export const workerPage = () => {
           <div className="w-full  flex">
             {" "}
             <Searchbar onSearch={handleSearch}></Searchbar>
-            <Filter />
           </div>
           <span className="h-[2px] w-full mb-4 bg-[#F3F4F6]"></span>
           {/* <div>filter</div> */}
