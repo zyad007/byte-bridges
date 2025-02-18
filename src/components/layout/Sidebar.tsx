@@ -21,7 +21,6 @@ const Sidebar = () => {
         isCollapsed ? "w-16 p-2" : "w-64 p-4"
       }`}
     >
-      {/* Sidebar Header */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <div className="text-center font-bold text-indigo-600 text-xl">
