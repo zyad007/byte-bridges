@@ -100,7 +100,7 @@ export function HomePage() {
   return (
     <div className="w-screen h-screen flex justify-start ">
       <div
-        className={`h-full ${isCollapsed ? "w-fit" : "w-[17%]"}  
+        className={`h-full   ${isCollapsed ? "w-fit" : "w-[17%]"}  
        `}
       >
         <Sidebar></Sidebar>
