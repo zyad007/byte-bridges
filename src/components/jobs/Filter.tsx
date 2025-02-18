@@ -106,7 +106,7 @@ export default function Filter() {
         <div className="flex flex-col gap-2 w-full h-full max-w-md items-start justify-center">
           <Slider
             className="max-w-md"
-            label="Client Rate"
+            label="Client Rate2"
             maxValue={5}
             minValue={0}
             step={0.01}

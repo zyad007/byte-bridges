@@ -1,4 +1,3 @@
-import Filter from "../components/jobs/Filter";
 import Searchbar from "../components/layout/Searchbar";
 import Sidebar from "../components/layout/Sidebar";
 import Worker from "../components/workers/Worker";

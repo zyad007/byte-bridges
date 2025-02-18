@@ -2,6 +2,7 @@ import Filter from "../components/jobs/Filter";
 import Job from "../components/jobs/Job";
 import Searchbar from "../../src/components/layout/Searchbar";
 import Sidebar from "../../src/components/layout/Sidebar";
+import { useSidebar } from "../context/SidebarContext";
 
 const jobs = [
   {
@@ -81,17 +82,36 @@ const jobs = [
   },
 ];
 export function jobPage() {
+  // const [selectedFilters, setSelectedFilters] = useState({
+  //   query: "",
+  //   priceRanges: [] as string[],
+  //   proposalsRanges: [] as string[],
+  //   isHourly: false,
+  //   isFixedPrice: false,
+  //   clientRating: 0,
+  // });
+  const { isCollapsed } = useSidebar();
+
   const handleSearch = (query: string) => {
-    console.log("Searching ", query);
+    console.log("Searching for:", query);
+    // setSelectedFilters((prev) => ({ ...prev, query }));
   };
 
   return (
     <div className="w-screen h-screen flex justify-start ">
-      <div className="w-[17%] h-full">
+      <div
+        className={`h-full   ${isCollapsed ? "w-fit" : "w-[17%]"}  
+       `}
+      >
         <Sidebar></Sidebar>
       </div>
 
-      <div className="flex w-[83%] h-full p-5 flex-col overflow-y-scroll">
+      <div
+        className={`flex w-[83%] h-full p-5 flex-col overflow-y-scroll          ${
+          isCollapsed ? "w-full" : "w-[83%]"
+        }  
+       `}
+      >
         <div className=" w-full  flex flex-col  ">
           <div className="w-full  flex">
             {" "}
