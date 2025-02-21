@@ -43,11 +43,11 @@ export default function Filter() {
           <img src={filter} alt="fav Icon" className="w-4 h-4 transition-all" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className=" flex p-4 w-auto justify-start items-start ">
+      <PopoverContent className=" font-urbanist flex p-4 w-auto justify-start items-start ">
         <div className="flex flex-col justify-start items-start">
           <div className="flex gap-4">
             <div className="flex flex-col">
-              <h3 className="text-sm font-medium my-2">Number of proposals</h3>
+              <h3 className="text-sm font-medium my-2 ">Number of proposals</h3>
               <div className="flex flex-col">
                 {numberOfProposals.map((filter, index) => (
                   <Checkbox
@@ -106,7 +106,7 @@ export default function Filter() {
         <div className="flex flex-col gap-2 w-full h-full max-w-md items-start justify-center">
           <Slider
             className="max-w-md"
-            label="Client Rate2"
+            label="Client Rate"
             maxValue={5}
             minValue={0}
             step={0.01}

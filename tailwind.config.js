@@ -7,10 +7,13 @@ export default {
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        urbanist: ["Urbanist", "serif"],
+      },
+    },
   },
   plugins: [],
   darkMode: "class",
   plugins: [heroui()],
-}
-
+};

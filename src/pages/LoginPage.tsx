@@ -27,15 +27,15 @@ export function LoginPage() {
     if (res.ok) {
       navigate("/job");
       Cookie.set("token", response.data.token);
-      console.log(response.data.token);
     } else {
       setError("Username and password doesn't match");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-all">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 space-y-4 transition-all">
+    <div className=" font-urbanist flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-900 transition-all">
+      <div className="w-2/3"></div>
+      <div className="w-1/3 h-full justify-center flex flex-col bg-white dark:bg-gray-800 shadow-lg p-6 space-y-4 transition-all">
         <h2 className="text-center text-2xl font-bold text-gray-900 dark:text-white">
           Welcome Back
         </h2>

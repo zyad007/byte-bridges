@@ -20,7 +20,6 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("here");
     const cookie = Cookies.get("token");
     if (location.pathname == "/") {
       if (cookie) {
@@ -31,6 +30,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
       navigate("/");
     }
   }, [location.pathname]);
+
   return (
     <SidebarContext.Provider value={{ isCollapsed, toggleSidebar }}>
       {children}{" "}

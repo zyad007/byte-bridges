@@ -16,11 +16,11 @@ interface jobProps {
   type: string;
   scrapped_at: string;
   tags: string;
-  client_rate: number;
+  clientRate: number;
   client_location: string;
   payment_verfied: boolean;
-  propsal_count: string;
-  client_spent: string;
+  proposalsNumber: string;
+  clientSpent: string;
 }
 const Job: React.FC<jobProps> = ({
   title,
@@ -30,16 +30,16 @@ const Job: React.FC<jobProps> = ({
   type,
   // scrapped_at,
   tags,
-  client_rate,
+  clientRate,
   client_location,
   payment_verfied,
-  propsal_count,
-  client_spent,
+  proposalsNumber,
+  clientSpent,
 }) => {
   return (
-    <div className=" shadow h-fit flex flex-col p-4 rounded-lg  cursor-pointer hover:shadow-lg hover:shadow-gray-500/50  ">
+    <div className="  font-urbanist shadow h-fit flex flex-col p-4 rounded-lg  cursor-pointer hover:shadow-lg hover:shadow-gray-500/50  ">
       <div className="flex items-start justify-between">
-        <h2 className="font-bold w-[75%]">{title}</h2>
+        <h2 className="font-bold   w-[75%]">{title}</h2>
         <img src={fav} alt="fav Icon" className="w-4 h-4 transition-all " />
         <ContextMenu />
       </div>
@@ -58,7 +58,9 @@ const Job: React.FC<jobProps> = ({
 
         <div className="flex items-center justify-end">
           <img src={paper} alt="fav Icon" className="w-5 h-5 transition-all " />
-          <h6 className="text-xs font-semibold w-1/2">{propsal_count}</h6>
+          <h6 className="text-xs font-semibold w-1/2">
+            {proposalsNumber} Proposals
+          </h6>
         </div>
       </div>
 
@@ -68,7 +70,7 @@ const Job: React.FC<jobProps> = ({
           {payment_verfied ? (
             <div className="flex justify-center gap-1 items-center">
               <img src={verified} alt="True Condition" className="w-3 h-3" />
-              <div className="text-xs ">Payment verified</div>
+              <div className="text-xs">Payment verified</div>
             </div>
           ) : (
             <div className="flex justify-center gap-1 items-center">
@@ -84,17 +86,17 @@ const Job: React.FC<jobProps> = ({
       </div>
       <span className="h-[2px] w-full my-4 bg-[#F3F4F6]"></span>
 
-      <Rate rating={client_rate} />
+      <Rate rating={clientRate} />
       <div className="flex justify-between">
         <div className="flex justify-center text-sm ">
-          Total spent: {client_spent}
+          Total spent: ${clientSpent}
         </div>
         <div className="flex justify-center text-sm font-semibold">
           {client_location}
         </div>
       </div>
       <div className="flex my-2 flex-wrap">
-        {tags.split("@").map((tag) => {
+        {tags.split(",").map((tag) => {
           return (
             <div className="m-1 bg-[#f3f4f6] text-black text-xs px-2 py-0.5 rounded-full w-fit font-semibold my-2">
               {tag}
