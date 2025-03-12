@@ -57,6 +57,7 @@ const ContextMenu: React.FC<interestedProps> = ({
       throw new Error("Failed to set it as favourite");
     }
   }
+
   async function setJobUnInterested(id: number) {
     const response = await fetch(
       `${config.BASE_URL}/jobs/not-interested/${id}`,
