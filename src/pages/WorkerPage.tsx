@@ -48,7 +48,10 @@ export function WorkerPage() {
         <div className=" w-full  flex flex-col  ">
           <div className="w-full  flex">
             {" "}
-            <Searchbar onSearch={handleSearch}></Searchbar>
+            <Searchbar
+              query=""
+              setQuery={handleSearch as (value: string) => void}
+            ></Searchbar>
           </div>
           <span className="h-[2px] w-full mb-4 bg-[#F3F4F6]"></span>
           {/* <div>filter</div> */}

@@ -6,7 +6,6 @@ import data from "../../../public/data.svg";
 import job from "../../../public/job.svg";
 import settings from "../../../public/settings.svg";
 import workers from "../../../public/workers.svg";
-import { CiLogout } from "react-icons/ci";
 
 import {
   MdOutlineKeyboardDoubleArrowLeft,
