@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-const ExpandableText = ({ text }: { text: string }) => {
+const ExpandableText = ({ text }: { text?: string }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpansion = () => setIsExpanded(!isExpanded);
 
   return (
     <div className="text-gray-800 text-sm font-semibold ">
       <p>
-        {isExpanded ? text : `${text.slice(0, text.length / 3)}...`}{" "}
+        {isExpanded ? text : `${text?.slice(0, text?.length / 3)}...`}{" "}
         {/* Truncate text */}
         <span
           onClick={toggleExpansion}

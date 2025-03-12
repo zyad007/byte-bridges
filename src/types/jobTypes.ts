@@ -1,5 +1,5 @@
 export interface JobType {
-  id?: number;
+  id: number;
   amount?: number | string;
   clientLocation?: string;
   clientRate?: number;

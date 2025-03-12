@@ -1,7 +1,12 @@
 import filter from "../../../public/filter.svg";
-import { useState } from "react";
-import { Input, Slider } from "@heroui/react";
-
+import { useEffect, useState } from "react";
+import {
+  Input,
+  Slider,
+  Select,
+  SelectItem,
+  SharedSelection,
+} from "@heroui/react";
 import {
   Popover,
   PopoverTrigger,
@@ -9,28 +14,132 @@ import {
   Checkbox,
   Button,
 } from "@heroui/react";
-const costRange = ["0-99", "100-499", "500-999", "1000-4999", "5000-"];
-const numberOfProposals = ["0-5", "5-10", "10-15", "15-20", "20-50", "50-"];
+import Cookies from "js-cookie";
+import config from "../../../config";
+import { WorkerType } from "../../types/workerTypes";
+import Filters, {
+  clientRatingRangeType,
+  ClientSpentRangeType,
+  CostRangeType,
+  ProposalsType,
+} from "../../types/filterTypes";
+interface filterProps {
+  selectedFilters: Filters;
+  setSelectedFilters: (selectedFilters: Filters) => void;
+}
 
-export default function Filter() {
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+const costRanges = ["0-99", "100-499", "500-999", "1000-4999", "5000-"];
+const ProposalsNumber = ["0-5", "5-10", "10-15", "15-20", "20-50", "50-"];
+
+const Filter: React.FC<filterProps> = ({
+  setSelectedFilters,
+  selectedFilters,
+}) => {
+  const [numberOfProposals, setNumberOfProposals] = useState<ProposalsType[]>(
+    []
+  );
+  const [costRange, setCostRange] = useState<CostRangeType[]>([]);
   const [open, setOpen] = useState(false);
-  const [clientSpent, setClientSpent] = useState({ min: "", max: "" });
-  const [value, setValue] = useState([1, 3]);
+  const [workers, setWorkers] = useState<WorkerType[]>([]);
+  const [isHourly, setIsHourly] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
+  const [verifiedOnly, setisverifiedOnly] = useState(false);
+  const [selectedWorkers, setSelectedWorkers] = useState<Set<string | number>>(
+    new Set()
+  );
 
-  const handleCheckboxChange = (filter: string, checked: boolean) => {
-    setSelectedFilters((prev) =>
-      checked ? [...prev, filter] : prev.filter((item) => item !== filter)
-    );
+  const [clientSpentRange, setClientSpentRange] =
+    useState<ClientSpentRangeType>({
+      min: 0,
+      max: 20000,
+    });
+
+  const [clientRatingRange, setClientRatingRange] =
+    useState<clientRatingRangeType>({
+      min: 2,
+      max: 4,
+    });
+  function handleNumberOfProposals(value: ProposalsType) {
+    if (!numberOfProposals.includes(value)) {
+      setNumberOfProposals((prev) => [...prev, value]);
+    } else numberOfProposals.filter((item) => item !== value);
+  }
+  function handleCostRange(value: CostRangeType) {
+    if (!costRange.includes(value)) {
+      setCostRange((prev) => [...prev, value]);
+    } else {
+      costRange.filter((item) => {
+        item !== value;
+      });
+    }
+  }
+  function handleSetIsHourly() {
+    setIsHourly(!isHourly);
+  }
+  function handleSetIsFixed() {
+    setIsFixed(!isFixed);
+  }
+  function handleVerified() {
+    setisverifiedOnly(!verifiedOnly);
+  }
+  const handleClientSpentRange = (type: "min" | "max", value: string) => {
+    if (!isNaN(Number(value))) {
+      setClientSpentRange((prev) => ({
+        ...prev,
+        [type]: Number(value),
+      }));
+    }
   };
-  const handleClientSpentChange = (type: "min" | "max", value: string) => {
-    setClientSpent((prev) => ({ ...prev, [type]: value }));
+  const handleClientRatingRange = (newValue: number[]) => {
+    setClientRatingRange({
+      min: newValue[0],
+      max: newValue[1],
+    });
   };
+
+  const handleSelectedWorkers = (keys: Set<string | number>) => {
+    setSelectedWorkers(keys);
+  };
+  async function queryAllWokrers() {
+    const token = Cookies.get("token");
+    const res = await fetch(config.BASE_URL + `/workers?search=`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const workers: WorkerType[] = await res.json();
+    setWorkers(workers);
+  }
+  useEffect(() => {
+    queryAllWokrers();
+  }, []);
+
   const applyFilters = () => {
-    console.log("Selected Filters:", selectedFilters);
-    setOpen(false);
-  };
+    const body = {
+      priceRanges: costRange,
+      proposalsRanges: numberOfProposals,
+      clientSpentRange: clientSpentRange,
+      clientRatingRange: clientRatingRange,
+      isHourly: isHourly,
+      isFixedPrice: isFixed,
+      verifiedOnly: verifiedOnly,
+      workerId: Array.from(selectedWorkers),
+    };
 
+    setSelectedFilters(body);
+  };
+  useEffect(() => {}, [
+    numberOfProposals,
+    costRange,
+    isFixed,
+    isHourly,
+    verifiedOnly,
+    clientSpentRange,
+    selectedWorkers,
+    selectedFilters,
+  ]);
   return (
     <Popover placement="bottom" showArrow isOpen={open} onOpenChange={setOpen}>
       <PopoverTrigger>
@@ -49,13 +158,15 @@ export default function Filter() {
             <div className="flex flex-col">
               <h3 className="text-sm font-medium my-2 ">Number of proposals</h3>
               <div className="flex flex-col">
-                {numberOfProposals.map((filter, index) => (
+                {ProposalsNumber.map((filter, index) => (
                   <Checkbox
                     className="mx-0.5"
                     key={index}
-                    isSelected={selectedFilters.includes(filter)}
-                    onValueChange={(checked) =>
-                      handleCheckboxChange(filter, checked)
+                    isSelected={numberOfProposals.includes(
+                      filter as ProposalsType
+                    )}
+                    onValueChange={() =>
+                      handleNumberOfProposals(filter as ProposalsType)
                     }
                   >
                     {filter}
@@ -66,13 +177,13 @@ export default function Filter() {
             <div className="flex flex-col">
               <h3 className="text-sm font-medium my-2">Cost Range</h3>
               <div className="flex flex-col">
-                {costRange.map((filter, index) => (
+                {costRanges.map((filter, index) => (
                   <Checkbox
                     className="mx-0.5"
                     key={index}
-                    isSelected={selectedFilters.includes(filter)}
-                    onValueChange={(checked) =>
-                      handleCheckboxChange(filter, checked)
+                    isSelected={costRange.includes(filter as CostRangeType)}
+                    onValueChange={() =>
+                      handleCostRange(filter as CostRangeType)
                     }
                   >
                     {filter}
@@ -88,20 +199,31 @@ export default function Filter() {
           <div className="flex">
             <Checkbox
               className="mx-0.5"
-              isSelected={selectedFilters.includes(filter)}
-              onValueChange={(checked) => handleCheckboxChange(filter, checked)}
+              onValueChange={() => {
+                handleSetIsHourly();
+              }}
             >
               Hourly
             </Checkbox>
             <Checkbox
               className="mx-0.5"
-              isSelected={selectedFilters.includes(filter)}
-              onValueChange={(checked) => handleCheckboxChange(filter, checked)}
+              onValueChange={() => {
+                handleSetIsFixed();
+              }}
             >
               Fixed
             </Checkbox>
           </div>
         </div>
+        <Checkbox
+          className="m-2 border-2 border-blue-500 bg-blue-100 w-full rounded-lg text-blue-700 hover:bg-blue-200 transition-all duration-300 flex items-center gap-2 p-2"
+          onValueChange={handleVerified}
+        >
+          <span className=" font-urbanist text-sm font-medium text-blue-700">
+            {" "}
+            Payment Verified
+          </span>
+        </Checkbox>
 
         <div className="flex flex-col gap-2 w-full h-full max-w-md items-start justify-center">
           <Slider
@@ -110,8 +232,10 @@ export default function Filter() {
             maxValue={5}
             minValue={0}
             step={0.01}
-            value={value}
-            onChange={setValue}
+            value={[clientRatingRange.min, clientRatingRange.max]}
+            onChange={
+              handleClientRatingRange as (value: number[] | number) => void
+            }
           />
         </div>
         <div className="my-2">
@@ -122,25 +246,49 @@ export default function Filter() {
             <Input
               type="text"
               placeholder="Min"
-              value={clientSpent.min}
-              onChange={(e) => handleClientSpentChange("min", e.target.value)}
+              value={clientSpentRange.min + ""}
+              onChange={(e) => handleClientSpentRange("min", e.target.value)}
               className="w-1/2"
             />
             <Input
               type="text"
               placeholder="Max"
-              value={clientSpent.max}
-              onChange={(e) => handleClientSpentChange("max", e.target.value)}
+              value={clientSpentRange.max + ""}
+              onChange={(e) => handleClientSpentRange("max", e.target.value)}
               className="w-1/2"
             />
           </div>
         </div>
+        <Select
+          label="Assigned to"
+          placeholder="Select workerd"
+          variant="bordered"
+          selectionMode="multiple"
+          selectedKeys={selectedWorkers}
+          onSelectionChange={
+            handleSelectedWorkers as (keys: SharedSelection) => void
+          }
+          className="max-w-xs"
+        >
+          {workers.map((worker) => (
+            <SelectItem key={worker.id} textValue={worker.name || worker.query}>
+              <div className="flex gap-2 items-center">
+                <div className="flex flex-col">
+                  <span className="text-small">
+                    {worker.name || worker.query}
+                  </span>
+                </div>
+              </div>
+            </SelectItem>
+          ))}
+        </Select>
         <div className="flex justify-end items-end">
-          <Button onPress={applyFilters} className="w-auto mt-3">
+          <Button className="w-auto mt-3" onPress={applyFilters}>
             Apply
           </Button>
         </div>
       </PopoverContent>
     </Popover>
   );
-}
+};
+export default Filter;
